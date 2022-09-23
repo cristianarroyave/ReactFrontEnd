@@ -19,8 +19,8 @@ const Table = ({data, column}) => {
     )
 }
 
-const TableHeadItem = ({ item, index }) => <th key={index} className="text-center">{item.heading}</th>
-const TableRow = ({ item, column, index, navigate}) => (
+export const TableHeadItem = ({ item, index }) => <th key={index} className="text-center">{item.heading}</th>
+export const TableRow = ({ item, column, index, navigate}) => (
     <tr key={index}>
         {column.map((columnItem, index) => {
             return <td key={index} className="text-center" onClick={() => navigate("/tareas/" + item.codigo)}>{item[`${columnItem.value}`]}</td>

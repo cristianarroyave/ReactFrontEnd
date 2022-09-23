@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import Table from './Tabla';
+import { useNavigate } from 'react-router-dom'
+import { TableHeadItem } from './Tabla';
+import { TableRow } from './Tabla';
+import { AltaTarea } from './AltaTarea';
 
 const column = [
     { heading: 'Nombre de tarea', value: 'nombre'},
@@ -16,10 +19,10 @@ export function Tareas()
     const {codigoProyecto}  = useParams();
 
     const [data, setData] = useState(null);
+
+    const navigate = useNavigate();
    
     useEffect(() => {
-        console.log("use efect");
-
         async function getTareas() {
             const response = await fetch(
                 "http://localhost:8080/tareas/" + codigoProyecto,
@@ -31,64 +34,30 @@ export function Tareas()
             const data = await response.json();
 
             setData(data);
+
         }
 
         getTareas();
-        
-        /*fetch(
-        "http://localhost:8080/tareas/" + codigoProyecto,
-        {
-            method : "GET",
-        }
-    ).then(
-        (respuesta) => {
-            if(respuesta.ok)
-            {
-                return respuesta.json()
-            }
-            console.log("error");
-        }
-    ).then(            
-        (datos) => {
-                setData(datos);
-            }
-    ).catch(
-        (error) => {                
-            console.log(error);
-        }
-    )*/},[])
+    },[])
    
 
     return (
-        <div>
-            {data && data.map(tarea=> {
-            return <div>{tarea.nombre}</div>
-        })}{console.log(Array.isArray(data))}
-
+        <div className="container">
+            <div className="table-responsive rounded mt-3">
+            <table className="table table-striped table-dark table-hover">
+                <thead>
+                    <tr key="0">
+                        {column.map((item, index) => <TableHeadItem item={item} index={index}/>)}
+                    </tr>
+                </thead>
+                <tbody>
+                    {data && data.map((item, index) => <TableRow item={item} column={column} index={index}/>)}
+                </tbody>
+            </table>
+            </div>
+            <AltaTarea />
         </div>
 
     )
 }
 
-/*fetch(
-    "http://localhost:8080/proyectos",
-    {
-        method : "GET",
-    }
-).then(
-    (respuesta) => {
-        return respuesta.json();
-    }
-).then(
-    (datos) => {
-        this.setState(
-            {
-                proyectos : datos
-            }
-        )
-    }
-).catch(
-    (error) => {
-        console.log("Error al realizar fetch" + error);
-    }
-)*/
