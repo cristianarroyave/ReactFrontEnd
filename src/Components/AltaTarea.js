@@ -46,7 +46,39 @@ export class AltaTarea extends Component
 
     darAlta()
     {
-        console.log(this.state)
+        fetch(
+            "http://127.0.0.1:8080/tareas/" + this.props.proyecto,
+            {
+                method : "POST",
+                body : JSON.stringify(this.state),
+                headers : {
+                    "Content-Type" : "application/json",
+                    "Access-Control-Allow-Origin" : "http://localhost:3000"
+                }
+            }
+        ).then(
+            (respuesta) => {
+                if(respuesta.ok)
+                {
+                    return respuesta.json();
+                }
+                else
+                {
+                    return respuesta.text().then(text => alert(JSON.parse(text).mensaje))
+                }
+            }
+        ).then(
+            () => {
+                
+            }
+        )
+        .catch(            
+            (error) => {
+                console.log(error);
+                alert("No se ha podido crear la tarea")
+            }
+        )
+
     }
 
     render()

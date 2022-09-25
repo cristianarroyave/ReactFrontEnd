@@ -74,11 +74,12 @@ export class AltaProyecto extends Component
             }
         ).then(
             () => {
-                this.props.handler()
+                this.props.update()
             }
         )
         .catch(            
             (error) => {
+                console.log(error)
                 alert("No se ha podido crear el proyecto")
             }
         )

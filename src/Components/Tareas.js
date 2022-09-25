@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { TableHeadItem } from './Tabla';
 import { TableRow } from './Tabla';
 import { AltaTarea } from './AltaTarea';
+import { AltaTareaFunctional } from './AltaTareaFunctional';
+import { createContext } from 'react';
+import { Context } from 'react';
 
 const column = [
     { heading: 'Nombre de tarea', value: 'nombre'},
@@ -18,28 +21,32 @@ export function Tareas()
 {
     const {codigoProyecto}  = useParams();
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState();
 
     const navigate = useNavigate();
    
-    useEffect(() => {
-        async function getTareas() {
-            const response = await fetch(
-                "http://localhost:8080/tareas/" + codigoProyecto,
-                {
-                    method : "GET",
-                }
-            )
-
-            const data = await response.json();
-
-            setData(data);
-
-        }
-
+    var updateTareas = () => {
         getTareas();
+    }
+
+    useEffect(() => {
+            getTareas();
     },[])
-   
+
+    async function getTareas() {
+        const response = await fetch(
+            "http://localhost:8080/tareas/" + codigoProyecto,
+            {
+                method : "GET",
+            }
+        )
+
+        const data = await response.json();
+
+        setData(data);
+
+    }
+
 
     return (
         <div className="container">
@@ -55,9 +62,14 @@ export function Tareas()
                 </tbody>
             </table>
             </div>
-            <AltaTarea />
+            <ContextoTareas.Provider value={updateTareas}>
+                <AltaTareaFunctional proyecto={codigoProyecto}/>
+            </ContextoTareas.Provider>
         </div>
 
     )
 }
 
+//             <AltaTarea proyecto={codigoProyecto} useUpdate={useUpdate}/>
+
+export const ContextoTareas = createContext();
