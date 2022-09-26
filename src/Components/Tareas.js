@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom'
-import { TableHeadItem } from './Tabla';
-import { TableRow } from './Tabla';
 import { AltaTarea } from './AltaTarea';
-import { AltaTareaFunctional } from './AltaTareaFunctional';
 import { createContext } from 'react';
-import { Context } from 'react';
+import Table from './Tabla';
 
 const column = [
     { heading: 'Nombre de tarea', value: 'nombre'},
@@ -19,11 +15,11 @@ const column = [
 
 export function Tareas()
 {
+    const target = "/imputaciones/"
+
     const {codigoProyecto}  = useParams();
 
-    const [data, setData] = useState();
-
-    const navigate = useNavigate();
+    const [data, setData] = useState([]);
    
     var updateTareas = () => {
         getTareas();
@@ -33,7 +29,8 @@ export function Tareas()
             getTareas();
     },[])
 
-    async function getTareas() {
+    async function getTareas() 
+    {
         const response = await fetch(
             "http://localhost:8080/tareas/" + codigoProyecto,
             {
@@ -44,32 +41,17 @@ export function Tareas()
         const data = await response.json();
 
         setData(data);
-
     }
-
 
     return (
         <div className="container">
-            <div className="table-responsive rounded mt-3">
-            <table className="table table-striped table-dark table-hover">
-                <thead>
-                    <tr key="0">
-                        {column.map((item, index) => <TableHeadItem item={item} index={index}/>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data && data.map((item, index) => <TableRow item={item} column={column} index={index}/>)}
-                </tbody>
-            </table>
-            </div>
+            <h1 className="text-center mt-3 mb-3">Tareas asignadas al proyecto</h1>
+            <Table data={data} column={column} target={target}/>
             <ContextoTareas.Provider value={updateTareas}>
-                <AltaTareaFunctional proyecto={codigoProyecto}/>
+                <AltaTarea proyecto={codigoProyecto}/>
             </ContextoTareas.Provider>
         </div>
-
     )
 }
-
-//             <AltaTarea proyecto={codigoProyecto} useUpdate={useUpdate}/>
 
 export const ContextoTareas = createContext();

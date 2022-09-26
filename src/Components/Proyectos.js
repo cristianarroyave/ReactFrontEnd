@@ -1,6 +1,7 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { AltaProyecto } from "./AltaProyecto";
 import Table from "./Tabla";
+import { createContext } from 'react';
 
 const column = [
     { heading: 'Nombre de proyecto', value: 'nombre'},
@@ -11,7 +12,48 @@ const column = [
     { heading: 'Fecha alta', value: 'fechaAlta'}
 ]
 
-export class Proyectos extends Component
+export function Proyectos()
+{
+    const target = "/tareas/"
+
+    const [data, setData] = useState([]);
+
+    var updateProyectos = () => {
+        getProyectos();
+    }
+
+    useEffect(() => {
+        getProyectos();
+    }, [])
+
+    async function getProyectos()
+    {
+        const response = await fetch(
+            "http://localhost:8080/proyectos",
+            {
+                method : "GET",
+            }
+        )
+
+        const data = await response.json();
+
+        setData(data);
+    }
+
+    return (
+        <div className="container">
+            <h1 className="text-center mt-3 mb-3">Proyectos</h1>
+            <Table data={data} column={column} target={target}/>
+            <ContextoProyectos.Provider value={updateProyectos}>
+                <AltaProyecto/>
+            </ContextoProyectos.Provider>
+        </div>
+    )
+}
+
+export const ContextoProyectos = createContext();
+
+/*export class Proyectos extends Component
 {
 
     constructor(props)
@@ -70,4 +112,4 @@ export class Proyectos extends Component
             </div>
         )
     }
-}
+}*/

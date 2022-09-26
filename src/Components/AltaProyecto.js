@@ -1,54 +1,28 @@
-import { Component } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ContextoProyectos } from "./Proyectos";
+import { useContext } from "react";
 
-var reg = /^\d+$/;
-
-export class AltaProyecto extends Component
+export function AltaProyecto()
 {
-    constructor(props)
+    const proyectos = useContext(ContextoProyectos)
+    const [nombre, setNombre] = useState();
+    const [horasEstimadas, setHoras] = useState();
+    const [fechaEstimadaCierre, setFechaEstimadaCierre] = useState(new Date());
+
+    function darAlta()
     {
-        super(props)
-        this.state = {
-            nombre: '',
-            horasEstimadas: '',
-            fechaEstimadaCierre: new Date()
-        }
-    }
-
-    leerCampo = (ev) => {
-        if(ev.target.id == 'horasEstimadas' && !/^[0-9]+$|^$/.test(ev.target.value)) 
-        {
-            return
-        }
-        this.setState(
-            {
-                ...this.state,
-                [ev.target.id] : ev.target.value,
-            }
-        )
-    }
-
-    leerFecha = (ev) => {
-        this.setState(
-            {
-                fechaEstimadaCierre : ev
-            }
-        )
-    }
-
-    darAlta()
-    {
-        var year = this.state.fechaEstimadaCierre.getFullYear();
-        var month = this.state.fechaEstimadaCierre.getMonth() + 1;
-        var day = this.state.fechaEstimadaCierre.getDate();
+        var year = fechaEstimadaCierre.getFullYear();
+        var month = fechaEstimadaCierre.getMonth() + 1;
+        var day = fechaEstimadaCierre.getDate();
 
         if(month <= 9) month = '0' + month;
         if(day <= 9) day = '0' + day;
 
         var proyecto = {
-            nombre : this.state.nombre,
-            horasEstimadas : this.state.horasEstimadas,
+            nombre : nombre,
+            horasEstimadas : horasEstimadas,
             fechaEstimadaCierre : year + '-' + month + '-' + day
         }
 
@@ -74,7 +48,7 @@ export class AltaProyecto extends Component
             }
         ).then(
             () => {
-                this.props.update()
+                proyectos();
             }
         )
         .catch(            
@@ -83,32 +57,29 @@ export class AltaProyecto extends Component
                 alert("No se ha podido crear el proyecto")
             }
         )
-
     }
 
-    render()
-    {
-        return (
-            <div className="form-group mt-2">
-                <h1 className="text-center">Cargar proyecto</h1>
-                <label htmlFor="nombre">Nombre proyecto</label>
-                    <input type="text" 
-                    className="form-control" 
-                    id="nombre" 
-                    value={this.state.nombre}
-                    onChange = {this.leerCampo}
-                    />
-                <label htmlFor="horasEstimadas">Horas estimadas</label>
-                    <input type="text" 
-                    className="form-control" 
-                    id="horasEstimadas" 
-                    value={this.state.horasEstimadas}
-                    onChange = {this.leerCampo}
-                    />
-                <label htmlFor="fechaEstimadaCierre">Fecha estimada de cierre</label>
-                    <DatePicker className="form-control" id="fechaEstimadaCierre" selected={this.state.fechaEstimadaCierre} onChange={this.leerFecha}/>
-                    <button onClick={ () => this.darAlta() } className="btn btn-secondary btn-md mt-2">Crear</button>
-            </div>
-        )
-    }
+    return (
+        <div className="form-group mt-2">
+            <h1 className="text-center">Cargar proyecto</h1>
+            <label htmlFor="nombre">Nombre proyecto</label>
+                <input type="text" 
+                className="form-control" 
+                id="nombre" 
+                value={nombre}
+                onChange = {e => setNombre(e.target.value)}
+                />
+            <label htmlFor="horasEstimadas">Horas estimadas</label>
+                <input type="number" 
+                pattern="[0-9]*"
+                className="form-control" 
+                id="horasEstimadas" 
+                value={horasEstimadas}
+                onChange = {e => setHoras(e.target.value)}
+                />
+            <label htmlFor="fechaEstimadaCierre">Fecha estimada de cierre</label>
+                <DatePicker className="form-control" id="fechaEstimadaCierre" selected={fechaEstimadaCierre} onChange={e => setFechaEstimadaCierre(e)}/>
+                <button onClick={ darAlta } className="btn btn-secondary btn-md mt-2">Crear</button>
+        </div>
+    )
 }

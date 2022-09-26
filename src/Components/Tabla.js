@@ -1,8 +1,13 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom'
 
-const Table = ({data, column}) => {
+var targetNavigation;
+
+const Table = ({data, column, target}) => {
     const navigate = useNavigate();
+    
+    targetNavigation = target;
+
     return (
         <div className="table-responsive rounded mt-3">
             <table className="table table-striped table-dark table-hover">
@@ -20,10 +25,11 @@ const Table = ({data, column}) => {
 }
 
 export const TableHeadItem = ({ item, index }) => <th key={index} className="text-center">{item.heading}</th>
+
 export const TableRow = ({ item, column, index, navigate}) => (
     <tr key={index}>
         {column.map((columnItem, index) => {
-            return <td key={index} className="text-center" onClick={() => navigate("/tareas/" + item.codigo)}>{item[`${columnItem.value}`]}</td>
+            return <td key={index} className="text-center" onClick={() => navigate(targetNavigation + item.codigo)}>{item[`${columnItem.value}`]}</td>
         })}
     </tr>
 )
