@@ -9,10 +9,13 @@ import { Proyectos } from './Components/Proyectos';
 import { Tareas } from './Components/Tareas';
 import { Imputaciones } from './Components/Imputaciones';
 import React from 'react';
+import { BurguerMenu } from './Components/BurguerMenu';
+import { NavBar } from './Components/NavBar';
 
 function App() {
   return (
     <Router>
+      <BurguerMenu/>
       <Routes>
         <Route path="/" element={<Proyectos />} />
         <Route path="/tareas/:codigoProyecto" element={<Tareas/>}/>

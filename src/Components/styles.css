@@ -1,0 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.center-container{
+    justify-content: center;
+}
+
+/* Boton burguer */
+
+#burguer {
+    position: fixed;
+    top: 1.5rem;
+    left: 1rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#burguer .barra {
+    width: 30px;
+    height: 2px;
+    margin: 6px;
+    background-color: white;
+    transition: 400ms all ease-in-out;
+}
+
+#burguer.abierto .barra {
+    background-color: white;
+
+}
+
+#burguer.abierto .barra.superior {
+    transform: translateY(8px) rotateZ(45deg);
+}
+
+#burguer.abierto .barra.media {
+    width: 0;
+}
+
+#burguer.abierto .barra.inferior {
+    transform: translateY(-8px) rotateZ(-45deg);
+}
+
+/* Menu Lateral  */
+
+.menu {
+    width: 200px;
+    height: 100vh;
+    background-color: lightgray;
+    position: fixed;
+    top: 0;
+    left: -360px;
+    padding-top: 40px;
+    transition: all 500ms ease-in-out;
+    z-index: 2;
+}
+
+.menu.abierto {
+    left: 0;
+}
+
+.menu nav {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu nav a {
+    padding: 0.6rem 0;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: 300ms all ease-in-out;
+}
+
+.menu nav a:hover {
+    color: white;
+}
+
+.menu .copyright {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+/* Header */
+
+header {
+    background-color: grey;
+    box-shadow: 1.5px 1.5px 4px #b3b3b3;
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    padding-left : 15em;
+    transition: 600ms all ease-in-out;
+}
+
+header.transparente {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+header img {
+    height: 60px;
+    width: auto;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #67666e;
+    font-weight: normal;
+    margin-left: 1em;
+    transition: 300ms ease-in-out all;
+}
+
+header.transparente nav a {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+header nav a.activo,
+header nav a:hover {
+    color: white;
+    font-weight: bold;
+}
+
+header.transparente nav a.activo,
+header.transparente nav a:hover {
+    transition: none;
+    color: white;
+}

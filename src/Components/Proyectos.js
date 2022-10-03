@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { AltaProyecto } from "./AltaProyecto";
 import Table from "./Tabla";
 import { createContext } from 'react';
+import './styles.css';
+import { NavBar } from "./NavBar";
 
 const column = [
     { heading: 'Nombre de proyecto', value: 'nombre'},
@@ -42,74 +44,18 @@ export function Proyectos()
 
     return (
         <div className="container">
-            <h1 className="text-center mt-3 mb-3">Proyectos</h1>
-            <Table data={data} column={column} target={target}/>
-            <ContextoProyectos.Provider value={updateProyectos}>
-                <AltaProyecto/>
-            </ContextoProyectos.Provider>
+            <NavBar top="Proyectos" bottom="Alta proyecto"/>
+            <div className="flex-container">
+                <h1 className="text-center pt-xl-5 mt-5 mb-3">Proyectos</h1>
+                <Table data={data} column={column} target={target}/>
+            </div>
+            <div>
+                <ContextoProyectos.Provider value={updateProyectos}>
+                    <AltaProyecto/>
+                </ContextoProyectos.Provider>
+            </div>
         </div>
     )
 }
 
 export const ContextoProyectos = createContext();
-
-/*export class Proyectos extends Component
-{
-
-    constructor(props)
-    {
-        super(props)
-
-        this.state = {
-            proyectos : []
-        }
-
-        this.handler = this.handler.bind(this);
-    }
-
-    componentDidMount()
-    {
-        this.cargarProyectos();
-    }
-
-    handler()
-    {
-        this.cargarProyectos();
-    }
-
-    cargarProyectos()
-    {
-        fetch(
-            "http://localhost:8080/proyectos",
-            {
-                method : "GET",
-            }
-        ).then(
-            (respuesta) => {
-                return respuesta.json();
-            }
-        ).then(
-            (datos) => {
-                this.setState(
-                    {
-                        proyectos : datos
-                    }
-                )
-            }
-        ).catch(
-            (error) => {
-                console.log("Error al realizar fetch" + error);
-            }
-        )
-    }
-    
-    render()
-    {
-        return (
-            <div className="container">
-                <Table data={this.state.proyectos} column={column} />
-                <AltaProyecto handler={this.handler}/>
-            </div>
-        )
-    }
-}*/

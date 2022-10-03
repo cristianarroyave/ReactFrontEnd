@@ -60,8 +60,8 @@ export function AltaProyecto()
     }
 
     return (
-        <div className="form-group mt-2">
-            <h1 className="text-center">Cargar proyecto</h1>
+        <div className="form-group mt-2 w-75 mx-auto flex-container center-container">
+            <h1 className="text-center mb-5">Crear un nuevo proyecto</h1>
             <label htmlFor="nombre">Nombre proyecto</label>
                 <input type="text" 
                 className="form-control" 

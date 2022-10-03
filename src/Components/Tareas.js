@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { AltaTarea } from './AltaTarea';
 import { createContext } from 'react';
 import Table from './Tabla';
+import { NavBar } from "./NavBar";
 
 const column = [
     { heading: 'Nombre de tarea', value: 'nombre'},
@@ -45,11 +46,16 @@ export function Tareas()
 
     return (
         <div className="container">
-            <h1 className="text-center mt-3 mb-3">Tareas asignadas al proyecto</h1>
-            <Table data={data} column={column} target={target}/>
-            <ContextoTareas.Provider value={updateTareas}>
-                <AltaTarea proyecto={codigoProyecto}/>
-            </ContextoTareas.Provider>
+            <NavBar top="Tareas" bottom="Alta tarea"/>
+            <div className="flex-container">
+                <h1 className="text-center pt-xl-5 mt-5 mb-3">Tareas asignadas al proyecto</h1>
+                <Table data={data} column={column} target={target}/>
+            </div>
+            <div>
+                <ContextoTareas.Provider value={updateTareas}>
+                    <AltaTarea proyecto={codigoProyecto}/>
+                </ContextoTareas.Provider>
+            </div>
         </div>
     )
 }

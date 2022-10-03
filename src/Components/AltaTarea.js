@@ -33,7 +33,14 @@ export function AltaTarea(proyecto)
             }
         ).then(
             (respuesta) => {
-                return respuesta.json();
+                if(respuesta.ok)
+                {
+                    return respuesta.json();
+                }
+                else
+                {
+                    return respuesta.text().then(text => alert(JSON.parse(text).mensaje))
+                }
             }
         ).then(
             (() => {
@@ -49,7 +56,7 @@ export function AltaTarea(proyecto)
 
 
     return (
-        <div className="form-group mt-2">
+        <div className="form-group mt-2 w-75 mx-auto flex-container center-container">
             <h1 className="text-center">Alta tarea</h1>
             <label htmlFor="nombre">Nombre tarea</label>
                 <input type="text" 
